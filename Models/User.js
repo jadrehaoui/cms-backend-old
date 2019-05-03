@@ -10,7 +10,8 @@ export default mongoose.model('user', new Schema({
     read: {type: Boolean, required: true, default: false},
     update: {type: Boolean, required: true, default: false},
     delete: {type: Boolean, required: true, default: false},
-    admin: {type: Boolean, required: true, default: false}
+    admin: {type: Boolean, required: true, default: false},
+    dev: {type: Boolean, required: true, default: false}
   },
   createdTs: {type: Date, default: Date.now},
   updatedTs: {type: Date, default: Date.now},

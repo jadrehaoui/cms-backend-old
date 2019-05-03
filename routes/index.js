@@ -1,10 +1,13 @@
 import home from './home';
 import * as product from './product';
 import * as project from './project';
+import * as form from './form';
 import * as user from './user';
 import cors from 'cors';
 import Product from '../Models/Product';
 import Project from '../Models/Project';
+import Form from '../Models/Form';
+import User from '../Models/User';
 export default function(app){
   app.get('/', (req, res) => home(req, res));
   app.use(cors())
@@ -32,8 +35,8 @@ export default function(app){
   app.post('/project/add', (req, res) => project.add(req, res));
   app.post('/project/:id', (req, res) => project.findById(req, res));
   app.put('/project/edit/:id', (req, res) => project.edit(req, res));
-  app.put('/project/unpublish/:id', (req, res) => product.unpublish(req, res));
-  app.put('/projects/unpublish', (req, res) => product.unpublishMany(req, res));
+  app.put('/project/unpublish/:id', (req, res) => project.unpublish(req, res));
+  app.put('/projects/unpublish', (req, res) => project.unpublishMany(req, res));
   app.delete('/project/remove', (req, res) => project.remove(req, res));
   app.delete('/projects/remove', (req, res) => project.removeMany(req, res));
   app.delete('/project/soft/remove', (req, res) => project.softlyRemove(req, res));
@@ -43,22 +46,36 @@ export default function(app){
   app.post('/user/add', (req, res) => user.add(req, res));
   app.post('/user/:id', (req, res) => user.findById(req, res));
   app.put('/user/edit/:id', (req, res) => user.edit(req, res));
-  app.put('/user/unpublish/:id', (req, res) => product.unpublish(req, res));
-  app.put('/users/unpublish', (req, res) => product.unpublishMany(req, res));
+  app.put('/user/unpublish/:id', (req, res) => user.unpublish(req, res));
+  app.put('/users/unpublish', (req, res) => user.unpublishMany(req, res));
   app.delete('/user/remove', (req, res) => user.remove(req, res));
   app.delete('/users/remove', (req, res) => user.removeMany(req, res));
   app.delete('/user/soft/remove', (req, res) => user.softlyRemove(req, res));
   app.delete('/users/soft/remove', (req, res) => user.softlyRemoveMany(req, res));
+  // FORM ROUTES
+  app.post('/forms', (req, res) => form.list(req, res));
+  app.post('/form', (req, res) => form.findByTitle(req, res));
+  app.post('/form/add', (req, res) => form.add(req, res));
+  app.post('/form/:id', (req, res) => form.findById(req, res));
+  app.put('/form/edit/:id', (req, res) => form.edit(req, res));
+  app.put('/form/unpublish/:id', (req, res) => form.unpublish(req, res));
+  app.put('/forms/unpublish', (req, res) => form.unpublishMany(req, res));
+  app.delete('/form/remove', (req, res) => form.remove(req, res));
+  app.delete('/forms/remove', (req, res) => form.removeMany(req, res));
+  app.delete('/form/soft/remove', (req, res) => form.softlyRemove(req, res));
+  app.delete('/forms/soft/remove', (req, res) => form.softlyRemoveMany(req, res));
 
   app.get('/dashboard/tables', (req, res, next) => {
     getLatest(Product, req, next, "Products");
   }, (req, res, next) => {
     getLatest(Project, req, next, "Projects");
+  },(req, res, next) => {
+    getLatest(User, req, next, "Users");
   },
   // {getLatest(Table, req, next,"TableName")},
   (req, res, next) => {
     res.send([
-      req["Products"], req["Projects"]
+      req["Products"], req["Projects"], req["Users"]
     ])
   })
 }
